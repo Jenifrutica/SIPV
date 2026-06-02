@@ -8,7 +8,15 @@
 
 Backend de una tienda de comics y mangas. API REST con arquitectura limpia por capas
 y persistencia en MongoDB. La documentacion de los requisitos y los diagramas estan en
-la [wiki del repositorio](https://github.com/NicoalsD/JENIREFFIJOEFIJOAFIOD/wiki).
+la [wiki del repositorio](https://github.com/Jenifrutica/SIPV/wiki).
+
+## Alcance
+
+Este entregable corresponde **unicamente al backend** (API REST). No se incluyen
+wireframes ni diseno de interfaz grafica porque el proyecto no contempla capa de
+presentacion: toda la interaccion se realiza y se verifica a traves de los endpoints
+REST, documentados y probados con Swagger UI. El consumo desde un cliente grafico queda
+fuera del alcance de esta entrega.
 
 ## Stack
 
@@ -39,9 +47,9 @@ com.tienda.sipv
 
 ## Como ejecutar
 
-1. Tener una instancia de MongoDB. Por defecto se conecta a
-   `mongodb://localhost:27017/sipv`. Se puede cambiar con la variable de entorno
-   `MONGODB_URI`.
+1. Configurar la conexion a MongoDB en `application.properties` mediante la propiedad
+   `spring.mongodb.uri` (prefijo de Spring Boot 4.0). Admite una instancia local
+   (`mongodb://localhost:27017/sipv`) o un cluster de MongoDB Atlas (`mongodb+srv://...`).
 2. Ejecutar:
 
    ```
