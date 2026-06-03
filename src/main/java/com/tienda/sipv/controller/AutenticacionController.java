@@ -9,6 +9,7 @@ import com.tienda.sipv.model.Empleado;
 import com.tienda.sipv.model.Usuario;
 import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IUsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "3. Autenticacion", description = "Login y gestion de usuarios")
 public class AutenticacionController {
 
     private final IUsuarioService usuarioService;

@@ -7,6 +7,7 @@ import com.tienda.sipv.model.Ejemplar;
 import com.tienda.sipv.model.enums.EstadoEjemplar;
 import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IInventarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.util.Map;
  * Para dar de baja se lee la cabecera "X-Rol" (debe ser ADMINISTRADOR).
  */
 @RestController
+@Tag(name = "1. Inventario", description = "Catalogo de obras, ejemplares, recepcion y disponibilidad")
 public class InventarioController {
 
     private final IInventarioService inventarioService;

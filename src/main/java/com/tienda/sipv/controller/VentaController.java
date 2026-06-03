@@ -10,6 +10,7 @@ import com.tienda.sipv.model.Recibo;
 import com.tienda.sipv.model.enums.EstadoRecibo;
 import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IVentaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.List;
  * Para anular se lee la cabecera "X-Rol" (debe ser ADMINISTRADOR).
  */
 @RestController
+@Tag(name = "2. Ventas", description = "Ventas, recibos, devoluciones y clientes")
 public class VentaController {
 
     private final IVentaService ventaService;
