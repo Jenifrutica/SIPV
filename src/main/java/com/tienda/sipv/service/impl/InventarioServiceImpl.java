@@ -63,6 +63,68 @@ public class InventarioServiceImpl implements IInventarioService {
     }
 
     @Override
+    public ObraDTO obtenerObra(String id) {
+        Obra obra = obraRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe la obra " + id));
+        return aDTO(obra);
+    }
+
+    @Override
+    public ObraDTO actualizarObra(String id, ObraDTO datos) {
+        Obra obra = obraRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe la obra " + id));
+
+        // Actualizacion parcial (PATCH): solo cambia los campos enviados.
+        if (datos.getTitulo() != null && !datos.getTitulo().isBlank()) {
+            obra.setTitulo(datos.getTitulo());
+        }
+        if (datos.getMangaka() != null) {
+            obra.setMangaka(datos.getMangaka());
+        }
+        if (datos.getEditorial() != null) {
+            obra.setEditorial(datos.getEditorial());
+        }
+        if (datos.getDemografia() != null) {
+            obra.setDemografia(datos.getDemografia());
+        }
+        if (datos.getIsbn() != null) {
+            // Evita dejar dos obras con el mismo ISBN.
+            obraRepository.findByIsbn(datos.getIsbn()).ifPresent(otra -> {
+                if (!otra.getId().equals(id)) {
+                    throw new OperacionInvalidaException("Ya existe una obra con el ISBN " + datos.getIsbn());
+                }
+            });
+            obra.setIsbn(datos.getIsbn());
+        }
+        if (datos.getPrecioListaNuevo() > 0) {
+            obra.setPrecioListaNuevo(datos.getPrecioListaNuevo());
+        }
+        return aDTO(obraRepository.save(obra));
+    }
+
+    @Override
+    public void eliminarObra(String id) {
+        Obra obra = obraRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe la obra " + id));
+        if (ejemplarRepository.countByObraId(id) > 0) {
+            throw new OperacionInvalidaException(
+                    "No se puede eliminar la obra " + id + " porque tiene ejemplares asociados");
+        }
+        obraRepository.delete(obra);
+    }
+
+    @Override
+    public List<Ejemplar> listarEjemplares() {
+        return ejemplarRepository.findAll();
+    }
+
+    @Override
+    public Ejemplar obtenerEjemplar(String sku) {
+        return ejemplarRepository.findById(sku)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el ejemplar " + sku));
+    }
+
+    @Override
     public List<String> ingresarLote(RecepcionDTO dto) {
         Obra obra = obraRepository.findById(dto.getObraId())
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe la obra " + dto.getObraId()));

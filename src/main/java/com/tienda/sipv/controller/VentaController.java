@@ -83,9 +83,21 @@ public class VentaController {
         return ventaService.obtenerCliente(id);
     }
 
-    /** Edita el nombre y el email de un cliente. */
+    /** Edita el nombre y el email de un cliente (reemplazo completo). */
     @PutMapping("/clientes/{id}")
     public Cliente editarCliente(@PathVariable String id, @RequestBody Cliente datos) {
         return ventaService.editarCliente(id, datos);
+    }
+
+    /** Actualiza parcialmente un cliente (solo los campos enviados). */
+    @PatchMapping("/clientes/{id}")
+    public Cliente actualizarClienteParcial(@PathVariable String id, @RequestBody Cliente datos) {
+        return ventaService.actualizarClienteParcial(id, datos);
+    }
+
+    /** Elimina un cliente. */
+    @DeleteMapping("/clientes/{id}")
+    public void eliminarCliente(@PathVariable String id) {
+        ventaService.eliminarCliente(id);
     }
 }

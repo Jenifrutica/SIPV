@@ -3,6 +3,7 @@ package com.tienda.sipv.controller;
 import com.tienda.sipv.dto.ObraDTO;
 import com.tienda.sipv.dto.RecepcionDTO;
 import com.tienda.sipv.exception.NoAutorizadoException;
+import com.tienda.sipv.model.Ejemplar;
 import com.tienda.sipv.model.enums.EstadoEjemplar;
 import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IInventarioService;
@@ -39,6 +40,36 @@ public class InventarioController {
     @GetMapping("/obras")
     public List<ObraDTO> buscarObras(@RequestParam(value = "titulo", required = false) String titulo) {
         return inventarioService.buscarPorTitulo(titulo);
+    }
+
+    /** Obtiene una obra por su id. */
+    @GetMapping("/obras/{id}")
+    public ObraDTO obtenerObra(@PathVariable String id) {
+        return inventarioService.obtenerObra(id);
+    }
+
+    /** Actualiza parcialmente una obra (solo los campos enviados). */
+    @PatchMapping("/obras/{id}")
+    public ObraDTO actualizarObra(@PathVariable String id, @RequestBody ObraDTO datos) {
+        return inventarioService.actualizarObra(id, datos);
+    }
+
+    /** Elimina una obra del catalogo. */
+    @DeleteMapping("/obras/{id}")
+    public void eliminarObra(@PathVariable String id) {
+        inventarioService.eliminarObra(id);
+    }
+
+    /** Lista todos los ejemplares del inventario. */
+    @GetMapping("/ejemplares")
+    public List<Ejemplar> listarEjemplares() {
+        return inventarioService.listarEjemplares();
+    }
+
+    /** Obtiene un ejemplar por su SKU. */
+    @GetMapping("/ejemplares/{sku}")
+    public Ejemplar obtenerEjemplar(@PathVariable String sku) {
+        return inventarioService.obtenerEjemplar(sku);
     }
 
     /** Registra la recepcion de un lote y devuelve los SKUs creados. */

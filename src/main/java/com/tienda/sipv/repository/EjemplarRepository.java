@@ -14,4 +14,7 @@ public interface EjemplarRepository extends MongoRepository<Ejemplar, String> {
      * Se usa para la disponibilidad (conteo dinamico, sin aritmetica de stock).
      */
     long countByObraIdAndEstadoActual(String obraId, EstadoEjemplar estadoActual);
+
+    /** Cuenta cuantos ejemplares (en cualquier estado) pertenecen a una obra. */
+    long countByObraId(String obraId);
 }

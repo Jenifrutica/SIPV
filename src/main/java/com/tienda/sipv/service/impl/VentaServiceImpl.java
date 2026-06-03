@@ -179,4 +179,33 @@ public class VentaServiceImpl implements IVentaService {
         cliente.setEmail(datos.getEmail());
         return clienteRepository.save(cliente);
     }
+
+    @Override
+    public Cliente actualizarClienteParcial(String id, Cliente datos) {
+        Cliente cliente = obtenerCliente(id);
+        // PATCH: solo cambia los campos enviados (no nulos).
+        if (datos.getNombre() != null) {
+            cliente.setNombre(datos.getNombre());
+        }
+        if (datos.getEmail() != null) {
+            cliente.setEmail(datos.getEmail());
+        }
+        if (datos.getCedula() != null) {
+            // Evita dejar dos clientes con la misma cedula.
+            clienteRepository.findByCedula(datos.getCedula()).ifPresent(otro -> {
+                if (!otro.getId().equals(id)) {
+                    throw new OperacionInvalidaException(
+                            "Ya existe un cliente con la cedula " + datos.getCedula());
+                }
+            });
+            cliente.setCedula(datos.getCedula());
+        }
+        return clienteRepository.save(cliente);
+    }
+
+    @Override
+    public void eliminarCliente(String id) {
+        Cliente cliente = obtenerCliente(id);
+        clienteRepository.delete(cliente);
+    }
 }

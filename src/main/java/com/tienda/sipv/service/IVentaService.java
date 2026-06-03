@@ -41,4 +41,10 @@ public interface IVentaService {
 
     /** Edita el nombre y el email de un cliente. */
     Cliente editarCliente(String id, Cliente datos);
+
+    /** Actualiza parcialmente un cliente; solo cambia los campos enviados (404 si no existe). */
+    Cliente actualizarClienteParcial(String id, Cliente datos);
+
+    /** Elimina un cliente (404 si no existe). */
+    void eliminarCliente(String id);
 }
