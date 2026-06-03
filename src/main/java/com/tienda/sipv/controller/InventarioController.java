@@ -28,76 +28,76 @@ public class InventarioController {
         this.inventarioService = inventarioService;
     }
 
-    /** Registra una obra en el catalogo. */
+
     @PostMapping("/obras")
     public ResponseEntity<ObraDTO> registrarObra(@Valid @RequestBody ObraDTO dto) {
         inventarioService.registrarObra(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
-    /** Consulta y busca obras; el parametro titulo es opcional. */
+
     @GetMapping("/obras")
     public List<ObraDTO> buscarObras(@RequestParam(value = "titulo", required = false) String titulo) {
         return inventarioService.buscarPorTitulo(titulo);
     }
 
-    /** Obtiene una obra por su id. */
+
     @GetMapping("/obras/{id}")
     public ObraDTO obtenerObra(@PathVariable String id) {
         return inventarioService.obtenerObra(id);
     }
 
-    /** Actualiza parcialmente una obra (solo los campos enviados). */
+
     @PatchMapping("/obras/{id}")
     public ObraDTO actualizarObra(@PathVariable String id, @RequestBody ObraDTO datos) {
         return inventarioService.actualizarObra(id, datos);
     }
 
-    /** Elimina una obra del catalogo. */
+
     @DeleteMapping("/obras/{id}")
     public void eliminarObra(@PathVariable String id) {
         inventarioService.eliminarObra(id);
     }
 
-    /** Lista todos los ejemplares del inventario. */
+
     @GetMapping("/ejemplares")
     public List<Ejemplar> listarEjemplares() {
         return inventarioService.listarEjemplares();
     }
 
-    /** Obtiene un ejemplar por su SKU. */
+
     @GetMapping("/ejemplares/{sku}")
     public Ejemplar obtenerEjemplar(@PathVariable String sku) {
         return inventarioService.obtenerEjemplar(sku);
     }
 
-    /** Crea un ejemplar suelto (la obra debe existir). */
+
     @PostMapping("/ejemplares")
     public ResponseEntity<Ejemplar> crearEjemplar(@RequestBody Ejemplar ejemplar) {
         Ejemplar creado = inventarioService.crearEjemplar(ejemplar);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 
-    /** Actualiza parcialmente un ejemplar (condicion y loteCaja). */
+
     @PatchMapping("/ejemplares/{sku}")
     public Ejemplar actualizarEjemplar(@PathVariable String sku, @RequestBody Ejemplar datos) {
         return inventarioService.actualizarEjemplar(sku, datos);
     }
 
-    /** Registra la recepcion de un lote y devuelve los SKUs creados. */
+
     @PostMapping("/recepciones")
     public ResponseEntity<List<String>> recibirMercancia(@Valid @RequestBody RecepcionDTO dto) {
         List<String> skus = inventarioService.ingresarLote(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(skus);
     }
 
-    /** Cambia el estado de un ejemplar. */
+
     @PatchMapping("/ejemplares/{sku}/estado")
     public void cambiarEstado(@PathVariable String sku, @RequestParam EstadoEjemplar nuevoEstado) {
         inventarioService.cambiarEstadoEjemplar(sku, nuevoEstado.name());
     }
 
-    /** Consulta publica de disponibilidad de una obra por su titulo. */
+
     @GetMapping("/obras/disponibilidad")
     public Map<String, Object> consultarDisponibilidad(@RequestParam String titulo) {
         long disponibles = inventarioService.consultarDisponibilidad(titulo);
@@ -107,7 +107,7 @@ public class InventarioController {
         return respuesta;
     }
 
-    /** Da de baja (elimina) un ejemplar defectuoso. Solo administrador. */
+
     @DeleteMapping("/ejemplares/{sku}")
     public void darDeBaja(@PathVariable String sku,
                           @RequestHeader(value = "X-Rol", required = false) Rol rol) {

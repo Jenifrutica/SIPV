@@ -29,13 +29,13 @@ public class AutenticacionController {
         this.usuarioService = usuarioService;
     }
 
-    /** Inicia sesion y devuelve un token con el rol. */
+
     @PostMapping("/login")
     public TokenResponseDTO login(@Valid @RequestBody LoginRequestDTO dto) {
         return usuarioService.autenticar(dto);
     }
 
-    /** Crea un empleado. Solo lo puede hacer un administrador. */
+
     @PostMapping("/usuarios/empleado")
     public ResponseEntity<Usuario> crearEmpleado(@RequestBody Empleado empleado,
                                                  @RequestHeader(value = "X-Rol", required = false) Rol rol) {
@@ -44,7 +44,7 @@ public class AutenticacionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 
-    /** Crea un administrador. Solo lo puede hacer un administrador. */
+
     @PostMapping("/usuarios/administrador")
     public ResponseEntity<Usuario> crearAdministrador(@RequestBody Administrador administrador,
                                                       @RequestHeader(value = "X-Rol", required = false) Rol rol) {
@@ -53,14 +53,14 @@ public class AutenticacionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 
-    /** Lista los usuarios del sistema. Solo lo puede ver un administrador. */
+
     @GetMapping("/usuarios")
     public List<Usuario> listarUsuarios(@RequestHeader(value = "X-Rol", required = false) Rol rol) {
         validarAdministrador(rol);
         return usuarioService.listarUsuarios();
     }
 
-    /** Obtiene un usuario por su id. Solo administrador. */
+
     @GetMapping("/usuarios/{id}")
     public Usuario obtenerUsuario(@PathVariable String id,
                                   @RequestHeader(value = "X-Rol", required = false) Rol rol) {
@@ -68,7 +68,7 @@ public class AutenticacionController {
         return usuarioService.obtenerUsuario(id);
     }
 
-    /** Actualiza parcialmente un usuario. Solo administrador. */
+
     @PatchMapping("/usuarios/{id}")
     public Usuario actualizarUsuario(@PathVariable String id, @RequestBody UsuarioUpdateDTO datos,
                                      @RequestHeader(value = "X-Rol", required = false) Rol rol) {
@@ -76,7 +76,7 @@ public class AutenticacionController {
         return usuarioService.actualizarUsuario(id, datos);
     }
 
-    /** Elimina un usuario. Solo administrador. */
+
     @DeleteMapping("/usuarios/{id}")
     public void eliminarUsuario(@PathVariable String id,
                                 @RequestHeader(value = "X-Rol", required = false) Rol rol) {
@@ -84,7 +84,7 @@ public class AutenticacionController {
         usuarioService.eliminarUsuario(id);
     }
 
-    /** Verifica que quien llama tenga rol de administrador. */
+
     private void validarAdministrador(Rol rol) {
         if (rol != Rol.ADMINISTRADOR) {
             throw new NoAutorizadoException("Esta operacion requiere rol ADMINISTRADOR");
