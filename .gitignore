@@ -6,3 +6,11 @@ target/
 *.iml
 .vscode/
 .DS_Store
+
+# temp/diagnostic files
+issues_export.json
+recreate_issues.py
+sample_body.txt
+after_wf.txt
+boot.log
+boot.err

@@ -6,6 +6,7 @@ import com.tienda.sipv.dto.VentaRequestDTO;
 import com.tienda.sipv.exception.NoAutorizadoException;
 import com.tienda.sipv.model.Cliente;
 import com.tienda.sipv.model.Recibo;
+import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IVentaService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -37,8 +38,8 @@ public class VentaController {
     /** Anula un recibo de venta. Solo administrador. */
     @PostMapping("/ventas/{id}/anular")
     public void anularVenta(@PathVariable String id,
-                            @RequestHeader(value = "X-Rol", required = false) String rol) {
-        if (!"ADMINISTRADOR".equals(rol)) {
+                            @RequestHeader(value = "X-Rol", required = false) Rol rol) {
+        if (rol != Rol.ADMINISTRADOR) {
             throw new NoAutorizadoException("Anular una venta requiere rol ADMINISTRADOR");
         }
         ventaService.anularVenta(id);

@@ -1,6 +1,7 @@
 package com.tienda.sipv.model;
 
 import com.tienda.sipv.model.enums.Rol;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,6 +21,7 @@ public abstract class Usuario {
     private String nombre;
     private String email;
     private String password;
+    @Schema(description = "Rol del usuario en el sistema", example = "EMPLEADO")
     private Rol rol;
 
     protected Usuario() {

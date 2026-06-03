@@ -3,6 +3,8 @@ package com.tienda.sipv.controller;
 import com.tienda.sipv.dto.ObraDTO;
 import com.tienda.sipv.dto.RecepcionDTO;
 import com.tienda.sipv.exception.NoAutorizadoException;
+import com.tienda.sipv.model.enums.EstadoEjemplar;
+import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IInventarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -48,8 +50,8 @@ public class InventarioController {
 
     /** Cambia el estado de un ejemplar. */
     @PatchMapping("/ejemplares/{sku}/estado")
-    public void cambiarEstado(@PathVariable String sku, @RequestParam String nuevoEstado) {
-        inventarioService.cambiarEstadoEjemplar(sku, nuevoEstado);
+    public void cambiarEstado(@PathVariable String sku, @RequestParam EstadoEjemplar nuevoEstado) {
+        inventarioService.cambiarEstadoEjemplar(sku, nuevoEstado.name());
     }
 
     /** Consulta publica de disponibilidad de una obra por su titulo. */
@@ -65,8 +67,8 @@ public class InventarioController {
     /** Da de baja (elimina) un ejemplar defectuoso. Solo administrador. */
     @DeleteMapping("/ejemplares/{sku}")
     public void darDeBaja(@PathVariable String sku,
-                          @RequestHeader(value = "X-Rol", required = false) String rol) {
-        if (!"ADMINISTRADOR".equals(rol)) {
+                          @RequestHeader(value = "X-Rol", required = false) Rol rol) {
+        if (rol != Rol.ADMINISTRADOR) {
             throw new NoAutorizadoException("Dar de baja requiere rol ADMINISTRADOR");
         }
         inventarioService.darDeBaja(sku);

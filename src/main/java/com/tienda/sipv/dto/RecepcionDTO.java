@@ -1,6 +1,7 @@
 package com.tienda.sipv.dto;
 
 import com.tienda.sipv.model.enums.Condicion;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class RecepcionDTO {
     @NotBlank
     private String loteCaja;
 
+    @Schema(description = "Condicion fisica del lote recibido", example = "NUEVO")
     @NotNull
     private Condicion condicion;
 

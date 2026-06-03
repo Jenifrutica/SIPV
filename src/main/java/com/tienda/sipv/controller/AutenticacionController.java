@@ -6,6 +6,7 @@ import com.tienda.sipv.exception.NoAutorizadoException;
 import com.tienda.sipv.model.Administrador;
 import com.tienda.sipv.model.Empleado;
 import com.tienda.sipv.model.Usuario;
+import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class AutenticacionController {
     /** Crea un empleado. Solo lo puede hacer un administrador. */
     @PostMapping("/usuarios/empleado")
     public ResponseEntity<Usuario> crearEmpleado(@RequestBody Empleado empleado,
-                                                 @RequestHeader(value = "X-Rol", required = false) String rol) {
+                                                 @RequestHeader(value = "X-Rol", required = false) Rol rol) {
         validarAdministrador(rol);
         Usuario creado = usuarioService.crearUsuario(empleado);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
@@ -48,7 +49,7 @@ public class AutenticacionController {
     /** Crea un administrador. Solo lo puede hacer un administrador. */
     @PostMapping("/usuarios/administrador")
     public ResponseEntity<Usuario> crearAdministrador(@RequestBody Administrador administrador,
-                                                      @RequestHeader(value = "X-Rol", required = false) String rol) {
+                                                      @RequestHeader(value = "X-Rol", required = false) Rol rol) {
         validarAdministrador(rol);
         Usuario creado = usuarioService.crearUsuario(administrador);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
@@ -56,14 +57,14 @@ public class AutenticacionController {
 
     /** Lista los usuarios del sistema. Solo lo puede ver un administrador. */
     @GetMapping("/usuarios")
-    public List<Usuario> listarUsuarios(@RequestHeader(value = "X-Rol", required = false) String rol) {
+    public List<Usuario> listarUsuarios(@RequestHeader(value = "X-Rol", required = false) Rol rol) {
         validarAdministrador(rol);
         return usuarioService.listarUsuarios();
     }
 
     /** Verifica que quien llama tenga rol de administrador. */
-    private void validarAdministrador(String rol) {
-        if (!"ADMINISTRADOR".equals(rol)) {
+    private void validarAdministrador(Rol rol) {
+        if (rol != Rol.ADMINISTRADOR) {
             throw new NoAutorizadoException("Esta operacion requiere rol ADMINISTRADOR");
         }
     }
