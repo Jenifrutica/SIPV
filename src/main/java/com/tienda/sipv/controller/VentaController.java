@@ -5,7 +5,9 @@ import com.tienda.sipv.dto.ReciboResponseDTO;
 import com.tienda.sipv.dto.VentaRequestDTO;
 import com.tienda.sipv.exception.NoAutorizadoException;
 import com.tienda.sipv.model.Cliente;
+import com.tienda.sipv.model.Devolucion;
 import com.tienda.sipv.model.Recibo;
+import com.tienda.sipv.model.enums.EstadoRecibo;
 import com.tienda.sipv.model.enums.Rol;
 import com.tienda.sipv.service.IVentaService;
 import jakarta.validation.Valid;
@@ -57,11 +59,47 @@ public class VentaController {
         return ventaService.obtenerRecibo(id);
     }
 
+    /** Cambia el estado de un recibo (EMITIDO / ANULADO). */
+    @PatchMapping("/recibos/{id}")
+    public Recibo actualizarRecibo(@PathVariable String id, @RequestParam EstadoRecibo estado) {
+        return ventaService.actualizarEstadoRecibo(id, estado);
+    }
+
+    /** Elimina un recibo. */
+    @DeleteMapping("/recibos/{id}")
+    public void eliminarRecibo(@PathVariable String id) {
+        ventaService.eliminarRecibo(id);
+    }
+
     /** Registra una devolucion. */
     @PostMapping("/devoluciones")
     public ResponseEntity<Void> registrarDevolucion(@Valid @RequestBody DevolucionDTO dto) {
         ventaService.procesarDevolucion(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /** Lista las devoluciones. */
+    @GetMapping("/devoluciones")
+    public List<Devolucion> listarDevoluciones() {
+        return ventaService.listarDevoluciones();
+    }
+
+    /** Obtiene una devolucion por su id. */
+    @GetMapping("/devoluciones/{id}")
+    public Devolucion obtenerDevolucion(@PathVariable String id) {
+        return ventaService.obtenerDevolucion(id);
+    }
+
+    /** Actualiza parcialmente una devolucion (solo el motivo). */
+    @PatchMapping("/devoluciones/{id}")
+    public Devolucion actualizarDevolucion(@PathVariable String id, @RequestBody Devolucion datos) {
+        return ventaService.actualizarDevolucion(id, datos);
+    }
+
+    /** Elimina una devolucion. */
+    @DeleteMapping("/devoluciones/{id}")
+    public void eliminarDevolucion(@PathVariable String id) {
+        ventaService.eliminarDevolucion(id);
     }
 
     /** Registra un cliente. */

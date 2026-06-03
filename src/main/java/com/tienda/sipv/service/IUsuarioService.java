@@ -2,6 +2,7 @@ package com.tienda.sipv.service;
 
 import com.tienda.sipv.dto.LoginRequestDTO;
 import com.tienda.sipv.dto.TokenResponseDTO;
+import com.tienda.sipv.dto.UsuarioUpdateDTO;
 import com.tienda.sipv.model.Usuario;
 
 import java.util.List;
@@ -19,4 +20,13 @@ public interface IUsuarioService {
 
     /** Lista todos los usuarios del sistema. */
     List<Usuario> listarUsuarios();
+
+    /** Obtiene un usuario por su id (404 si no existe). */
+    Usuario obtenerUsuario(String id);
+
+    /** Actualiza parcialmente un usuario (nombre, email, password, rol). */
+    Usuario actualizarUsuario(String id, UsuarioUpdateDTO datos);
+
+    /** Elimina un usuario (404 si no existe). */
+    void eliminarUsuario(String id);
 }

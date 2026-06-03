@@ -72,6 +72,19 @@ public class InventarioController {
         return inventarioService.obtenerEjemplar(sku);
     }
 
+    /** Crea un ejemplar suelto (la obra debe existir). */
+    @PostMapping("/ejemplares")
+    public ResponseEntity<Ejemplar> crearEjemplar(@RequestBody Ejemplar ejemplar) {
+        Ejemplar creado = inventarioService.crearEjemplar(ejemplar);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+    }
+
+    /** Actualiza parcialmente un ejemplar (condicion y loteCaja). */
+    @PatchMapping("/ejemplares/{sku}")
+    public Ejemplar actualizarEjemplar(@PathVariable String sku, @RequestBody Ejemplar datos) {
+        return inventarioService.actualizarEjemplar(sku, datos);
+    }
+
     /** Registra la recepcion de un lote y devuelve los SKUs creados. */
     @PostMapping("/recepciones")
     public ResponseEntity<List<String>> recibirMercancia(@Valid @RequestBody RecepcionDTO dto) {

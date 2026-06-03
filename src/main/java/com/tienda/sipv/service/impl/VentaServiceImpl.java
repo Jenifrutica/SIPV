@@ -151,6 +151,50 @@ public class VentaServiceImpl implements IVentaService {
     }
 
     @Override
+    public Recibo actualizarEstadoRecibo(String idRecibo, EstadoRecibo estado) {
+        Recibo recibo = reciboRepository.findById(idRecibo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el recibo " + idRecibo));
+        recibo.setEstado(estado);
+        return reciboRepository.save(recibo);
+    }
+
+    @Override
+    public void eliminarRecibo(String idRecibo) {
+        Recibo recibo = reciboRepository.findById(idRecibo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el recibo " + idRecibo));
+        reciboRepository.delete(recibo);
+    }
+
+    @Override
+    public List<Devolucion> listarDevoluciones() {
+        return devolucionRepository.findAll();
+    }
+
+    @Override
+    public Devolucion obtenerDevolucion(String id) {
+        return devolucionRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe la devolucion " + id));
+    }
+
+    @Override
+    public Devolucion actualizarDevolucion(String id, Devolucion datos) {
+        Devolucion devolucion = devolucionRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe la devolucion " + id));
+        // PATCH: solo el motivo es editable; las referencias (recibo, sku) no cambian.
+        if (datos.getMotivo() != null) {
+            devolucion.setMotivo(datos.getMotivo());
+        }
+        return devolucionRepository.save(devolucion);
+    }
+
+    @Override
+    public void eliminarDevolucion(String id) {
+        Devolucion devolucion = devolucionRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe la devolucion " + id));
+        devolucionRepository.delete(devolucion);
+    }
+
+    @Override
     public Cliente registrarCliente(Cliente cliente) {
         if (clienteRepository.findByCedula(cliente.getCedula()).isPresent()) {
             throw new OperacionInvalidaException("Ya existe un cliente con la cedula " + cliente.getCedula());

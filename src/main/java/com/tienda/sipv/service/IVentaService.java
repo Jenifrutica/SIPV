@@ -4,7 +4,9 @@ import com.tienda.sipv.dto.DevolucionDTO;
 import com.tienda.sipv.dto.ReciboResponseDTO;
 import com.tienda.sipv.dto.VentaRequestDTO;
 import com.tienda.sipv.model.Cliente;
+import com.tienda.sipv.model.Devolucion;
 import com.tienda.sipv.model.Recibo;
+import com.tienda.sipv.model.enums.EstadoRecibo;
 
 import java.util.List;
 
@@ -27,6 +29,24 @@ public interface IVentaService {
 
     /** Obtiene el detalle de un recibo. */
     Recibo obtenerRecibo(String idRecibo);
+
+    /** Cambia el estado de un recibo (404 si no existe). */
+    Recibo actualizarEstadoRecibo(String idRecibo, EstadoRecibo estado);
+
+    /** Elimina un recibo (404 si no existe). */
+    void eliminarRecibo(String idRecibo);
+
+    /** Lista todas las devoluciones. */
+    List<Devolucion> listarDevoluciones();
+
+    /** Obtiene una devolucion por su id (404 si no existe). */
+    Devolucion obtenerDevolucion(String id);
+
+    /** Actualiza parcialmente una devolucion (solo el motivo). */
+    Devolucion actualizarDevolucion(String id, Devolucion datos);
+
+    /** Elimina una devolucion (404 si no existe). */
+    void eliminarDevolucion(String id);
 
     // --- Gestion de clientes (el modulo de Ventas usa el repositorio de clientes) ---
 

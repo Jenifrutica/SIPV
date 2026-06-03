@@ -32,6 +32,12 @@ public interface IInventarioService {
     /** Obtiene un ejemplar por su SKU (404 si no existe). */
     Ejemplar obtenerEjemplar(String sku);
 
+    /** Crea un ejemplar suelto (valida que la obra exista; estado inicial BODEGA). */
+    Ejemplar crearEjemplar(Ejemplar ejemplar);
+
+    /** Actualiza parcialmente un ejemplar (condicion y loteCaja; el estado tiene su propio endpoint). */
+    Ejemplar actualizarEjemplar(String sku, Ejemplar datos);
+
     /** Registra la recepcion de un lote y devuelve los SKUs de los ejemplares creados. */
     List<String> ingresarLote(RecepcionDTO dto);
 

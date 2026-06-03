@@ -125,6 +125,35 @@ public class InventarioServiceImpl implements IInventarioService {
     }
 
     @Override
+    public Ejemplar crearEjemplar(Ejemplar ejemplar) {
+        // La obra a la que pertenece el ejemplar debe existir.
+        obraRepository.findById(ejemplar.getObraId())
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "No existe la obra " + ejemplar.getObraId()));
+        if (ejemplar.getSku() == null || ejemplar.getSku().isBlank()) {
+            ejemplar.setSku(UUID.randomUUID().toString());
+        }
+        if (ejemplar.getEstadoActual() == null) {
+            ejemplar.setEstadoActual(EstadoEjemplar.BODEGA);
+        }
+        return ejemplarRepository.save(ejemplar);
+    }
+
+    @Override
+    public Ejemplar actualizarEjemplar(String sku, Ejemplar datos) {
+        Ejemplar ejemplar = ejemplarRepository.findById(sku)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el ejemplar " + sku));
+        // PATCH: solo condicion y loteCaja. El estado cambia por /ejemplares/{sku}/estado.
+        if (datos.getCondicion() != null) {
+            ejemplar.setCondicion(datos.getCondicion());
+        }
+        if (datos.getLoteCaja() != null) {
+            ejemplar.setLoteCaja(datos.getLoteCaja());
+        }
+        return ejemplarRepository.save(ejemplar);
+    }
+
+    @Override
     public List<String> ingresarLote(RecepcionDTO dto) {
         Obra obra = obraRepository.findById(dto.getObraId())
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe la obra " + dto.getObraId()));

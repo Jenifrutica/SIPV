@@ -2,6 +2,7 @@ package com.tienda.sipv.controller;
 
 import com.tienda.sipv.dto.LoginRequestDTO;
 import com.tienda.sipv.dto.TokenResponseDTO;
+import com.tienda.sipv.dto.UsuarioUpdateDTO;
 import com.tienda.sipv.exception.NoAutorizadoException;
 import com.tienda.sipv.model.Administrador;
 import com.tienda.sipv.model.Empleado;
@@ -60,6 +61,30 @@ public class AutenticacionController {
     public List<Usuario> listarUsuarios(@RequestHeader(value = "X-Rol", required = false) Rol rol) {
         validarAdministrador(rol);
         return usuarioService.listarUsuarios();
+    }
+
+    /** Obtiene un usuario por su id. Solo administrador. */
+    @GetMapping("/usuarios/{id}")
+    public Usuario obtenerUsuario(@PathVariable String id,
+                                  @RequestHeader(value = "X-Rol", required = false) Rol rol) {
+        validarAdministrador(rol);
+        return usuarioService.obtenerUsuario(id);
+    }
+
+    /** Actualiza parcialmente un usuario. Solo administrador. */
+    @PatchMapping("/usuarios/{id}")
+    public Usuario actualizarUsuario(@PathVariable String id, @RequestBody UsuarioUpdateDTO datos,
+                                     @RequestHeader(value = "X-Rol", required = false) Rol rol) {
+        validarAdministrador(rol);
+        return usuarioService.actualizarUsuario(id, datos);
+    }
+
+    /** Elimina un usuario. Solo administrador. */
+    @DeleteMapping("/usuarios/{id}")
+    public void eliminarUsuario(@PathVariable String id,
+                                @RequestHeader(value = "X-Rol", required = false) Rol rol) {
+        validarAdministrador(rol);
+        usuarioService.eliminarUsuario(id);
     }
 
     /** Verifica que quien llama tenga rol de administrador. */

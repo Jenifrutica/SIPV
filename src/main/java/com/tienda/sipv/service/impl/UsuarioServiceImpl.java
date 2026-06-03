@@ -2,7 +2,9 @@ package com.tienda.sipv.service.impl;
 
 import com.tienda.sipv.dto.LoginRequestDTO;
 import com.tienda.sipv.dto.TokenResponseDTO;
+import com.tienda.sipv.dto.UsuarioUpdateDTO;
 import com.tienda.sipv.exception.CredencialesInvalidasException;
+import com.tienda.sipv.exception.RecursoNoEncontradoException;
 import com.tienda.sipv.model.Usuario;
 import com.tienda.sipv.repository.UsuarioRepository;
 import com.tienda.sipv.service.IUsuarioService;
@@ -48,5 +50,38 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
+    }
+
+    @Override
+    public Usuario obtenerUsuario(String id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el usuario " + id));
+    }
+
+    @Override
+    public Usuario actualizarUsuario(String id, UsuarioUpdateDTO datos) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el usuario " + id));
+        // PATCH: solo cambia los campos enviados (no nulos).
+        if (datos.getNombre() != null) {
+            usuario.setNombre(datos.getNombre());
+        }
+        if (datos.getEmail() != null) {
+            usuario.setEmail(datos.getEmail());
+        }
+        if (datos.getPassword() != null) {
+            usuario.setPassword(datos.getPassword());
+        }
+        if (datos.getRol() != null) {
+            usuario.setRol(datos.getRol());
+        }
+        return usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public void eliminarUsuario(String id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el usuario " + id));
+        usuarioRepository.delete(usuario);
     }
 }
