@@ -17,12 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Modulo de Autenticacion: login y gestion de usuarios.
- *
- * Para las operaciones de administrador se lee la cabecera "X-Rol". En un sistema
- * real ese rol vendria dentro del token; aqui se simplifica con una cabecera.
- */
+
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "3. Autenticacion", description = "Login y gestion de usuarios")

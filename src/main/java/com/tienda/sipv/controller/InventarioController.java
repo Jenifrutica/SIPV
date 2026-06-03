@@ -17,10 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Modulo de Inventario: catalogo, recepcion, estados y disponibilidad.
- * Para dar de baja se lee la cabecera "X-Rol" (debe ser ADMINISTRADOR).
- */
+
 @RestController
 @Tag(name = "1. Inventario", description = "Catalogo de obras, ejemplares, recepcion y disponibilidad")
 public class InventarioController {

@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Modulo de Ventas: ventas, devoluciones, anulacion y clientes.
- * Para anular se lee la cabecera "X-Rol" (debe ser ADMINISTRADOR).
- */
+
 @RestController
 @Tag(name = "2. Ventas", description = "Ventas, recibos, devoluciones y clientes")
 public class VentaController {
